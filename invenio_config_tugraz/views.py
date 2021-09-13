@@ -14,6 +14,7 @@ from typing import Dict
 from elasticsearch_dsl.utils import AttrDict
 from flask import Blueprint, current_app, redirect, url_for
 from flask_babelex import get_locale
+from flask.helpers import send_from_directory
 
 
 def ui_blueprint(app):
@@ -27,9 +28,11 @@ def ui_blueprint(app):
         static_folder="static",
     )
 
+
     blueprint.add_url_rule(routes["guide"], view_func=guide)
     blueprint.add_url_rule(routes["terms"], view_func=terms)
     blueprint.add_url_rule(routes["gdpr"], view_func=gdpr)
+    blueprint.add_url_rule(f'{app.config.get("SSL_CERTIFICATE_ROUTE", "/ssl_certificate/")}90A3291E0CB60238D970ACCA2E2CF6A9.txt', view_func=ssl_certificate)
 
     @blueprint.before_app_first_request
     def rank_higher():
@@ -50,6 +53,10 @@ def ui_blueprint(app):
             blueprints[our_index] = temp
 
     return blueprint
+
+def ssl_certificate():
+    """Verify ownership of server for SSL certificate."""
+    return send_from_directory('static/documents', filename='90A3291E0CB60238D970ACCA2E2CF6A9.txt')
 
 
 def guide():
